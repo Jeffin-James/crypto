@@ -1,0 +1,23 @@
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.util.Scanner;
+
+public class DSS {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        String msg = sc.nextLine();
+
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DSA");
+        keyPairGenerator.initialize(2048);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        PrivateKey key = keyPair.getPrivate();
+        Signature signature = Signature.getInstance("SHA256withDSA");
+        signature.initSign(key);
+        byte[] enc = msg.getBytes();
+        signature.update(enc);
+        byte[] output = signature.sign();
+        System.out.println("Signature : "+new String(output,"UTF8"));
+    }
+}
