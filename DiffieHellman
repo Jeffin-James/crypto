@@ -1,0 +1,19 @@
+public class DiffieHellman {
+    public static void main(String[] args) {
+        int p=23,g=5,x=4,y=3;
+        double as = Math.pow(g,x)%p;
+        double bs = Math.pow(g,y)%p;
+        double ac = Math.pow(bs,x)%p;
+        double bc = Math.pow(as,y)%p;
+        double share = Math.pow(g,x*y)%p;
+
+        System.out.println("Alice send : "+as);
+        System.out.println("Bob send : "+bs);
+        System.out.println("Alice Compute : "+ac);
+        System.out.println("Bob compute : "+bc);
+        if(ac == share && bc == share){
+            System.out.println("Shared Key : "+share);
+            System.out.println("Shared Successfully");
+        }
+    }
+}
