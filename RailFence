@@ -1,0 +1,56 @@
+public class RailFenceCipher {
+    public static void main(String[] args) {
+        String msg = "Anna University, Chennai";
+        int depth = 2;
+        String enc = encode(msg,depth);
+        String dec = decode(enc,depth);
+        System.out.println(msg);
+        System.out.println(enc);
+        System.out.println(dec);
+    }
+
+    public static String encode(String msg, int depth){
+        int r = depth;
+        int l = msg.length();
+        int c = l/depth;
+        int k=0;
+        char [][] mat = new char[r][c];
+        String enc = "";
+        for(int i=0;i<c;i++){
+            for(int j=0;j<r;j++){
+                if(k!=l)
+                    mat[j][i] = msg.charAt(k++);
+                else
+                    mat[j][i] = 'X';
+            }
+        }
+
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                enc += mat[i][j];
+            }
+        }
+        return enc;
+    }
+
+    public static String decode(String enc, int depth){
+        int r = depth;
+        int l = enc.length();
+        int c = l/depth;
+        int k=0;
+        char [][] mat = new char[r][c];
+        String dec = "";
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                    mat[i][j] = enc.charAt(k++);
+            }
+        }
+
+        for(int i=0;i<c;i++){
+            for(int j=0;j<r;j++){
+                dec += mat[j][i];
+            }
+        }
+        return dec;
+    }
+}
