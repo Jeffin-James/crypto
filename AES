@@ -1,0 +1,63 @@
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.MessageDigest;
+import java.util.Arrays;
+import java.util.Base64;
+
+public class Main {
+    public static void main(String[] args){
+        String secret = "annaUniversity";
+        String msg = "www.annauniv.edu";
+        String enc = AES.encrypt(msg,secret);
+        String dec = AES.decrypt(enc,secret);
+        System.out.println(secret);
+        System.out.println(msg);
+        System.out.println(enc);
+        System.out.println(dec);
+    }
+
+}
+class AES{
+    public static SecretKeySpec secretKey;
+    public static byte[] key;
+
+    public static void setKey(String keys){
+        MessageDigest spa = null;
+        try {
+            key = keys.getBytes("UTF-8");
+            spa = MessageDigest.getInstance("SHA-1");
+            key = spa.digest(key);
+            key = Arrays.copyOf(key,16);
+            secretKey = new SecretKeySpec(key,"AES");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static String encrypt(String msg, String secret){
+        try {
+            setKey(secret);
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE,secretKey);
+            return Base64.getEncoder().encodeToString(cipher.doFinal(msg.getBytes("UTF-8")));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String decrypt(String decrypts, String secret){
+        try {
+            setKey(secret);
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE,secretKey);
+            return new String(cipher.doFinal(Base64.getDecoder().decode(decrypts)));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
