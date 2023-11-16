@@ -1,47 +1,29 @@
-import java.util.Scanner;
-public class CeaserCipher
-{
-    public static final String ALPHABET="abcdefghijklmnopqrstuvwxyz";
-    public static String encrypt(String plainText,int shiftKey)
-    {
-        plainText=plainText.toLowerCase();
-        String cipherText="";
-        for (int i=0; i<plainText.length();i++)
-        {
-            int charPosition=ALPHABET.indexOf(plainText.charAt(i));
-            int keyVal=(shiftKey+charPosition)%26;
-            char replaceVal=ALPHABET.charAt(keyVal);
-            cipherText+=replaceVal;
-        }
-        return cipherText;
+public class CaesarCipher {
+    public static void main(String[] args) {
+        String msg = "Anna University";
+        String enc = encode(msg,3);
+        String dec = decode(enc,3);
+        System.out.println(enc);
+        System.out.println(dec);
     }
-    public static String decrypt(String cipherText,int shiftKey)
-    {
-        cipherText = cipherText.toLowerCase();
-        String plainText = "";
-        for(int i=0;i<cipherText.length();i++)
-        {
-            int charPosition= ALPHABET. indexOf(cipherText. charAt(i));
-            int keyVal=(charPosition-shiftKey)%26;
-            if (keyVal< 0)
-            {
-                keyVal=ALPHABET.length()+keyVal;
-            }
-            char replaceVal=ALPHABET.charAt(keyVal);
-            plainText+=replaceVal;
 
+    public static String encode(String msg, int offset){
+        offset = offset%26+26;
+        StringBuilder sb = new StringBuilder();
+        for(char i : msg.toCharArray()){
+            if(Character.isLetter(i)){
+                if(Character.isUpperCase(i))
+                    sb.append((char) ('A'+(i - 'A' +offset)%26));
+                else
+                    sb.append((char) ('a' + (i-'a'+offset)%26));
+            }
+            else
+                sb.append(i);
         }
-        return plainText;
+        return sb.toString();
     }
-    public static void main(String[] args)
-    {
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Enter the Plain text for Encryption: ");
-        String message=new String();
-        message=sc.next();
-        System.out.println("Encrypted message:Cipher Text="+encrypt(message,3));
-        System.out.println("Decrypted message:Plain Text="+decrypt (encrypt(
-                message,3),3));
-        sc.close();
+
+    public static String decode(String msg , int offset){
+        return encode(msg,26-offset);
     }
 }
